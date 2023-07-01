@@ -1,0 +1,7 @@
+# IDE related
+.idea/
+.vscode/
+.DS_Store
+
+# Project related
+/log/
