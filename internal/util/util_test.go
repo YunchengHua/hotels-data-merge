@@ -10,7 +10,7 @@ import (
 )
 
 var (
-	successHandlerFunc = func(context.Context, map[string][]string) (interface{}, error) {
+	successHandlerFunc = func(context.Context, map[string]string) (interface{}, error) {
 		return nil, nil
 	}
 )
