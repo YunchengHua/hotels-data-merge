@@ -48,3 +48,7 @@ func Info(ctx context.Context, msg string, v ...any) {
 func Debug(ctx context.Context, msg string, v ...any) {
 	log.Printf("Debug|Trace:"+icontext.GetTraceID(ctx)+" : "+msg+"\n", v...)
 }
+
+func Fatal(ctx context.Context, msg string, v ...any) {
+	log.Fatalf("Fatal|Trace:"+icontext.GetTraceID(ctx)+" : "+msg+"\n", v...)
+}
