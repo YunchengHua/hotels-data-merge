@@ -2,16 +2,18 @@ package hotel
 
 import (
 	"context"
+	"encoding/hex"
 	"encoding/json"
+	"fmt"
 
 	"github.com/YunchengHua/hotels-data-merge/internal/log"
 	"github.com/YunchengHua/hotels-data-merge/internal/util"
 )
 
 const (
-	url1 = "http://www.mocky.io/v2/5ebbea002e000054009f3ffc"
-	url2 = "http://www.mocky.io/v2/5ebbea102e000029009f3fff"
-	url3 = "http://www.mocky.io/v2/5ebbea1f2e00002b009f4000"
+	Url1 = "http://www.mocky.io/v2/5ebbea002e000054009f3ffc"
+	Url2 = "http://www.mocky.io/v2/5ebbea102e000029009f3fff"
+	Url3 = "http://www.mocky.io/v2/5ebbea1f2e00002b009f4000"
 )
 
 //go:generate mockgen -destination ./repo.mock.gen.go -source repo.go -package hotel
@@ -32,10 +34,11 @@ type repo struct {
 }
 
 func (r *repo) GetFromSource1(ctx context.Context) (map[string]*Hotel, error) {
-	raw, err := r.httpService.Get(ctx, url1)
+	raw, err := r.httpService.Get(ctx, Url1)
 	if err != nil {
 		return nil, err
 	}
+	fmt.Println(hex.EncodeToString(raw))
 
 	var responseHotels []hotelFromSource1
 	err = json.Unmarshal(raw, &responseHotels)
@@ -74,7 +77,7 @@ func (r *repo) GetFromSource1(ctx context.Context) (map[string]*Hotel, error) {
 }
 
 func (r *repo) GetFromSource2(ctx context.Context) (map[string]*Hotel, error) {
-	raw, err := r.httpService.Get(ctx, url2)
+	raw, err := r.httpService.Get(ctx, Url2)
 	if err != nil {
 		return nil, err
 	}
@@ -120,7 +123,7 @@ func (r *repo) GetFromSource2(ctx context.Context) (map[string]*Hotel, error) {
 }
 
 func (r *repo) GetFromSource3(ctx context.Context) (map[string]*Hotel, error) {
-	raw, err := r.httpService.Get(ctx, url3)
+	raw, err := r.httpService.Get(ctx, Url3)
 	if err != nil {
 		return nil, err
 	}

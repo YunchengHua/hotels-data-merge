@@ -21,7 +21,7 @@ func TestHotelsHandler_Execute_HotelID(t *testing.T) {
 	testHotel := &hotel.Hotel{ID: "testHotel"}
 	mockHotelService.EXPECT().GetByHotelIDs(gomock.Any(), []string{"testHotel"}).Return([]*hotel.Hotel{testHotel}).Times(1)
 
-	params := map[string]string{paramNameHotelIDs: `"testHotel"`}
+	params := map[string]string{ParamNameHotelIDs: `"testHotel"`}
 
 	resp, err := handler.Execute(context.Background(), params)
 
@@ -47,7 +47,7 @@ func TestHotelsHandler_Execute_DestinationIDs(t *testing.T) {
 	testHotel := &hotel.Hotel{DestinationID: 123}
 	mockHotelService.EXPECT().GetByDestinationIDs(gomock.Any(), []int64{123}).Return([]*hotel.Hotel{testHotel}).Times(1)
 
-	params := map[string]string{paramNameDestinationIDs: `123`}
+	params := map[string]string{ParamNameDestinationIDs: `123`}
 
 	resp, err := handler.Execute(context.Background(), params)
 

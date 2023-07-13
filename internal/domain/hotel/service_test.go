@@ -126,7 +126,7 @@ func TestFetchFn(t *testing.T) {
 
 	service := NewService(mockRepo)
 
-	err := fetchFn(context.Background(), service)
+	err := FetchFn(context.Background(), service)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}

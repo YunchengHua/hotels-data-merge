@@ -27,7 +27,7 @@ func TestRepo_GetFromSource1(t *testing.T) {
 
 	data, _ := json.Marshal(testHotel) // handle error separately
 
-	mockHttpService.EXPECT().Get(gomock.Any(), url1).Return(data, nil)
+	mockHttpService.EXPECT().Get(gomock.Any(), Url1).Return(data, nil)
 
 	repo := NewRepo(mockHttpService)
 
@@ -54,7 +54,7 @@ func TestRepo_GetFromSource2(t *testing.T) {
 
 	data, _ := json.Marshal(testHotel) // handle error separately
 
-	mockHttpService.EXPECT().Get(gomock.Any(), url2).Return(data, nil)
+	mockHttpService.EXPECT().Get(gomock.Any(), Url2).Return(data, nil)
 
 	repo := NewRepo(mockHttpService)
 
@@ -82,7 +82,7 @@ func TestRepo_GetFromSource3(t *testing.T) {
 
 	data, _ := json.Marshal(testHotel) // handle error separately
 
-	mockHttpService.EXPECT().Get(gomock.Any(), url3).Return(data, nil)
+	mockHttpService.EXPECT().Get(gomock.Any(), Url3).Return(data, nil)
 
 	repo := NewRepo(mockHttpService)
 

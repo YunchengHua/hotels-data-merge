@@ -15,8 +15,8 @@ type HotelsResponse struct {
 }
 
 const (
-	paramNameHotelIDs       = "hotel_ids"
-	paramNameDestinationIDs = "destination_ids"
+	ParamNameHotelIDs       = "hotel_ids"
+	ParamNameDestinationIDs = "destination_ids"
 )
 
 func NewDefaultHotelsHandler() *HotelsHandler {
@@ -51,12 +51,12 @@ func (h *HotelsHandler) Execute(
 
 func (h *HotelsHandler) getFromRequest(
 	ctx context.Context, params map[string]string) ([]string, []int64, error) {
-	if raw, exist := params[paramNameHotelIDs]; exist {
+	if raw, exist := params[ParamNameHotelIDs]; exist {
 		raw = strings.ReplaceAll(raw, `"`, "") // Remove quotes
 		hotelIds := strings.Split(raw, `,`)    // Split into array
 		return hotelIds, nil, nil
 	}
-	if raw, exist := params[paramNameDestinationIDs]; exist {
+	if raw, exist := params[ParamNameDestinationIDs]; exist {
 		raws := strings.Split(raw, `,`) // Split into array
 		res := make([]int64, 0, len(raws))
 		for _, raw := range raws {

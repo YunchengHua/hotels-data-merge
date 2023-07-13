@@ -17,7 +17,7 @@ var (
 )
 
 func MustInit(ctx context.Context, hotelService Service) {
-	err := fetchFn(ctx, hotelService)
+	err := FetchFn(ctx, hotelService)
 	if err != nil {
 		fmt.Println("Fail to fetch hotels", err.Error())
 		log.Fatal(ctx, "Fail to fetch hotels: %v", err.Error())
@@ -27,7 +27,7 @@ func MustInit(ctx context.Context, hotelService Service) {
 	go func() {
 		for {
 			t := <-ticker.C
-			err := fetchFn(ctx, hotelService)
+			err := FetchFn(ctx, hotelService)
 			if err != nil {
 				log.Error(ctx, "fetch error, skip this time: %v: %v", t, err.Error())
 			}
@@ -35,7 +35,7 @@ func MustInit(ctx context.Context, hotelService Service) {
 	}()
 }
 
-func fetchFn(ctx context.Context, hotelService Service) error {
+func FetchFn(ctx context.Context, hotelService Service) error {
 	var err error
 	var tempHotels map[string]*Hotel
 	tempHotelDestinations := make(map[int64][]string)
@@ -78,18 +78,45 @@ type service struct {
 }
 
 func (s *service) FetchAll(ctx context.Context) (map[string]*Hotel, error) {
-	hotels1, err := s.repo.GetFromSource1(ctx)
-	if err != nil {
-		return nil, err
-	}
-	hotels2, err := s.repo.GetFromSource2(ctx)
-	if err != nil {
-		return nil, err
-	}
-	hotels3, err := s.repo.GetFromSource3(ctx)
-	if err != nil {
-		return nil, err
-	}
+	wg := sync.WaitGroup{}
+	var hotels1 map[string]*Hotel
+	var hotels2 map[string]*Hotel
+	var hotels3 map[string]*Hotel
+
+	go func() {
+		var err error
+		wg.Add(1)
+		defer func() {
+			wg.Done()
+		}()
+		hotels1, err = s.repo.GetFromSource1(ctx)
+		if err != nil {
+			log.Error(ctx, "fetch err: %v", err)
+		}
+	}()
+	go func() {
+		var err error
+		wg.Add(1)
+		defer func() {
+			wg.Done()
+		}()
+		hotels2, err = s.repo.GetFromSource2(ctx)
+		if err != nil {
+			log.Error(ctx, "fetch err: %v", err)
+		}
+	}()
+	go func() {
+		var err error
+		wg.Add(1)
+		defer func() {
+			wg.Done()
+		}()
+		hotels3, err = s.repo.GetFromSource3(ctx)
+		if err != nil {
+			log.Error(ctx, "fetch err: %v", err)
+		}
+	}()
+	wg.Wait()
 
 	return MergeHotelsMap(MergeHotelsMap(hotels1, hotels2), hotels3), nil
 }
